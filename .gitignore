@@ -1,0 +1,31 @@
+# Local runtime state and generated artifacts
+/customs-home/
+/output/
+/tmp/
+
+# Dependencies and build output
+node_modules/
+.next/
+.next-*/
+dist/
+build/
+coverage/
+*.tsbuildinfo
+
+# Local environment and credentials
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.pem
+*.key
+.credentials.yaml
+
+# OS and editor files
+.DS_Store
+.idea/
+.vscode/
+
+# Logs and temporary files
+*.log
+*.tmp
