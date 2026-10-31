@@ -1,0 +1,14 @@
+{
+  "name": "rsi-app-agent",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "setup": "npm --prefix console/web install",
+    "passwd": "node console/bin/passwd.ts",
+    "dev": "npm --prefix console/web run dev",
+    "build": "npm --prefix console/web run build",
+    "start": "npm --prefix console/web run start",
+    "typecheck": "npm --prefix console/web run typecheck",
+    "test": "node --test 'rsi-kernel/test/*.test.ts' 'rsi-harness/test/*.test.ts' 'console/test/*.test.ts'"
+  }
+}

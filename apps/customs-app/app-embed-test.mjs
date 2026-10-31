@@ -1,0 +1,10 @@
+import { createRuntime } from "@deepseek-ai/dsh-embedded";
+const runtime = await createRuntime({ cwd: "/tmp", persona: "You are a customs broker." });
+const conversation = await runtime.createConversation({ id: `app-${Date.now()}` });
+let final = "";
+conversation.on((m) => { if (m.type === "event" && m.event.type === "assistant/message") final = (m.event.data.message.content||[]).filter(c=>c.type==="text").map(c=>c.text).join(""); });
+await conversation.prompt("Reply with exactly: APP-NODE-OK");
+await new Promise(r => { const t=setInterval(()=>{ if(final){clearInterval(t);r();} },400); setTimeout(()=>{clearInterval(t);r();},120000); });
+console.log("FINAL:", final);
+await runtime.close();
+process.exit(0);

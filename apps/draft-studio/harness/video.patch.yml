@@ -1,0 +1,27 @@
+- id: skill-filesystem
+  config:
+    includeDefaultRoots: false
+    watch: false
+- id: sandbox-policy
+  config:
+    mode: workspace-write
+- id: approval
+  config:
+    policy: never
+# Generated Python is rendered by the server's constrained worker, not the agent shell.
+- id: tool-bash
+  disabled: true
+- id: tool-pwsh
+  disabled: true
+- id: tool-subagent
+  disabled: true
+- id: tool-subagent-fork
+  disabled: true
+- id: permission
+  config:
+    defaultPreset: workspace-write
+# Archived source bodies are JSON string values; avoid silently clipping a long line.
+- id: tool-fs
+  config:
+    readMaxLineLength: 1000000
+    readMaxBytes: 2000000

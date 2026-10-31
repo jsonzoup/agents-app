@@ -1,0 +1,3 @@
+- insert:
+    - id: draft-studio-copilot-tools
+      name: ./copilot-tools.mjs

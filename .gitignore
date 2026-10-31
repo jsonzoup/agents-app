@@ -29,3 +29,12 @@ coverage/
 # Logs and temporary files
 *.log
 *.tmp
+
+# Preserved pre-migration Harness checkout
+/.harness-local-backup/
+
+# Application-owned runtime data (kept locally during migration)
+/apps/customs-app/data/
+
+# Adapter dependencies are supplied by the application
+/apps/adapters/dsh-ui/node_modules

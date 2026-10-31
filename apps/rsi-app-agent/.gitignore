@@ -1,0 +1,7 @@
+node_modules/
+.next/
+*.tsbuildinfo
+next-env.d.ts
+console/web/src/apps/registry.generated.ts
+console/web/src/apps/home.generated.json
+console/web/src/app/apps.generated.css

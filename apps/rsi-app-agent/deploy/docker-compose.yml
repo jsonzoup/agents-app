@@ -1,0 +1,62 @@
+# PostgreSQL, Redis and MinIO for the platform in cluster mode (see documents/部署.md).
+# Secrets come from deploy/.env, made by `node console/bin/cluster-env.ts`.
+#
+#   docker compose -f deploy/docker-compose.yml up -d
+#
+# Ports are bound to 127.0.0.1; change RSI_*_PORT in deploy/.env when they are taken.
+# RSI_PG_IMAGE / RSI_REDIS_IMAGE / RSI_MINIO_IMAGE pick other images (e.g. from a mirror).
+name: rsi-platform
+
+services:
+  postgres:
+    image: ${RSI_PG_IMAGE:-postgres:16-alpine}
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: rsi
+      POSTGRES_DB: rsi
+      POSTGRES_PASSWORD: ${RSI_PG_PASSWORD:?deploy/.env 里没有 RSI_PG_PASSWORD}
+    ports:
+      - 127.0.0.1:${RSI_PG_PORT:-5432}:5432
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, pg_isready -U rsi -d rsi]
+      interval: 5s
+      retries: 20
+
+  redis:
+    image: ${RSI_REDIS_IMAGE:-redis:7-alpine}
+    restart: unless-stopped
+    command: [redis-server, --appendonly, 'yes', --requirepass, '${RSI_REDIS_PASSWORD:?deploy/.env 里没有 RSI_REDIS_PASSWORD}']
+    ports:
+      - 127.0.0.1:${RSI_REDIS_PORT:-6380}:6379
+    volumes:
+      - redis:/data
+    healthcheck:
+      test: [CMD-SHELL, 'redis-cli -a "$$REDIS_PASSWORD" --no-auth-warning ping | grep PONG']
+      interval: 5s
+      retries: 20
+    environment:
+      REDIS_PASSWORD: ${RSI_REDIS_PASSWORD}
+
+  minio:
+    image: ${RSI_MINIO_IMAGE:-minio/minio:latest}
+    restart: unless-stopped
+    command: [server, /data, --console-address, ':9001']
+    environment:
+      MINIO_ROOT_USER: ${RSI_S3_ACCESS_KEY:?deploy/.env 里没有 RSI_S3_ACCESS_KEY}
+      MINIO_ROOT_PASSWORD: ${RSI_S3_SECRET_KEY:?deploy/.env 里没有 RSI_S3_SECRET_KEY}
+    ports:
+      - 127.0.0.1:${RSI_MINIO_PORT:-9100}:9000
+      - 127.0.0.1:${RSI_MINIO_CONSOLE_PORT:-9101}:9001
+    volumes:
+      - minio:/data
+    healthcheck:
+      test: [CMD-SHELL, 'curl -fs http://127.0.0.1:9000/minio/health/live || exit 1']
+      interval: 5s
+      retries: 20
+
+volumes:
+  postgres:
+  redis:
+  minio:

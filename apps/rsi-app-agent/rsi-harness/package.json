@@ -1,0 +1,19 @@
+{
+  "name": "@baoguandan/rsi-harness",
+  "version": "0.1.0",
+  "description": "Driver that runs rsi-kernel on DeepSeek Harness: executor over `dsh --profile headless --json`, trace normalisation, and the Cordis plugin that installs the kernel.",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./plugin": "./src/plugin.ts"
+  },
+  "scripts": {
+    "test": "node --test 'test/*.test.ts'"
+  },
+  "engines": {
+    "node": ">=22.18"
+  },
+  "peerDependencies": {
+    "@baoguandan/rsi-kernel": "*"
+  }
+}

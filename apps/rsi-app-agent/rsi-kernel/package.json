@@ -1,0 +1,16 @@
+{
+  "name": "@baoguandan/rsi-kernel",
+  "version": "0.1.0",
+  "description": "Industry-agnostic self-evolution kernel: releases, signals, proposals, verification, gated publishing.",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "test": "node --test 'test/*.test.ts'"
+  }
+}
